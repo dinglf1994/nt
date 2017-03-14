@@ -1,0 +1,147 @@
+<script type="text/javascript">
+    try{ace.settings.loadState('main-container')}catch(e){}
+</script>
+
+<div id="sidebar" class="sidebar responsive ace-save-state">
+    <script type="text/javascript">
+        try{ace.settings.loadState('sidebar')}catch(e){}
+    </script>
+
+    <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+        <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+            <button class="btn btn-success">
+                <i class="ace-icon fa fa-signal"></i>
+            </button>
+
+            <button class="btn btn-info">
+                <i class="ace-icon fa fa-pencil"></i>
+            </button>
+
+            <button class="btn btn-warning">
+                <i class="ace-icon fa fa-users"></i>
+            </button>
+
+            <button class="btn btn-danger">
+                <i class="ace-icon fa fa-cogs"></i>
+            </button>
+        </div>
+
+        <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
+            <span class="btn btn-success"></span>
+
+            <span class="btn btn-info"></span>
+
+            <span class="btn btn-warning"></span>
+
+            <span class="btn btn-danger"></span>
+        </div>
+    </div><!-- /.sidebar-shortcuts -->
+
+    <ul class="nav nav-list">
+        <li class="{$index ?: ''}">
+            <a href="/admin">
+                <i class="menu-icon fa fa-user"></i>
+                <span class="menu-text">管理员信息</span>
+            </a>
+            <b class="arrow"></b>
+        </li>
+        <!--课程管理菜单-->
+        <li class="{$courseActive ?: ''}">
+            <a href="#" class="dropdown-toggle">
+                <i class="menu-icon fa fa-desktop"></i>
+                <span class="menu-text">课程管理</span>
+                <b class="arrow fa fa-angle-down"></b>
+            </a>
+            <b class="arrow"></b>
+
+            <ul class="submenu">
+                <li class="{$courseList ?: ''}">
+                    <a href="/admin/course/courseList">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                            课程信息
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+                <li class="{$addCourse ?: ''}">
+                    <a href="/admin/course/addCourse">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        添加课程
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+            </ul>
+        </li>
+
+        <!--推荐人管理菜单-->
+        <li class="{$referrerActive ?: ''}">
+            <a href="#" class="dropdown-toggle">
+                <i class="menu-icon fa fa-users"></i>
+                <span class="menu-text">推荐人管理</span>
+                <b class="arrow fa fa-angle-down"></b>
+            </a>
+            <b class="arrow"></b>
+
+            <ul class="submenu">
+                <li class="{$referrerList ?: ''}">
+                    <a href="/admin/referrer/referrerList">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        推荐人信息
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+                <li class="{$referrerAdd ?: ''}">
+                    <a href="/admin/referrer/referrerAdd">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        添加推荐人
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+            </ul>
+        </li>
+
+        <!--积分管理菜单-->
+        <li class="{$creditActive ?: ''}">
+            <a href="#" class="dropdown-toggle">
+                <i class="menu-icon fa fa-credit-card"></i>
+                <span class="menu-text">积分管理</span>
+                <b class="arrow fa fa-angle-down"></b>
+            </a>
+            <b class="arrow"></b>
+
+            <ul class="submenu">
+                <li class="{$creditManage ?: ''}">
+                    <a href="/admin/credit/creditManage">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        积分管理
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+                <li class="{$creditWithdrawals ?: ''}">
+                    <a href="/admin/credit/creditWithdrawals">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        积分提现请求
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+                <li class="{$hasDone ?: ''}">
+                    <a href="/admin/credit/hasDone">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        积分提现处理
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+            </ul>
+        </li>
+    </ul><!-- /.nav-list -->
+
+    <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+        <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+    </div>
+</div>
