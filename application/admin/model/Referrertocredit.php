@@ -53,4 +53,22 @@ class Referrertocredit extends Model implements SqlInterface
         // TODO: Implement tableUpdate() method.
     }
 
+    public function creditUpdate($where, $credit)
+    {
+        $this->_init();
+        $info = $this->model->where($where)->field(['recommendation', 'credits'])->find();
+        if ($info) {
+            $data['recommendation'] = $info['recommendation'] + 1;
+            $data['credits'] = $info['credits'] + $credit;
+            $this->model->where($where)->data($data)->update();
+        } else {
+            $data['referrer_id'] = $where['referrer_id'];
+            $data['course_id'] = $where['course_id'];
+            $data['recommendation'] = 1;
+            $data['credits'] = $credit;
+            $this->model->data($data)->save();
+        }
+        return true;
+    }
+
 }

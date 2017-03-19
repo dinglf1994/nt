@@ -2,6 +2,7 @@
 namespace app\index\controller;
 
 use app\index\model\Course;
+use app\index\model\Rectous;
 use app\index\model\Referrer;
 use think\Controller;
 use think\Request;
@@ -11,6 +12,7 @@ class Index extends Controller
 {
     protected $referrerModel;
     protected $course;
+    protected $recToUs;
     private $loginCheck = ['login', 'register'];
     public function _initialize()
     {
@@ -20,13 +22,18 @@ class Index extends Controller
             isLogin();
         }
     }
-    public function __construct(Request $request, Referrer $referrer, Course $course)
+    public function __construct(Request $request, Referrer $referrer, Course $course, Rectous $rectous)
     {
         parent::__construct($request);
         $this->referrerModel = $referrer;
         $this->course = $course;
+        $this->recToUs = $rectous;
     }
 
+    /**
+     * @return mixed
+     * 个人课程积分
+     */
     public function index()
     {
         $where['id'] = Session::get('id');
@@ -38,6 +45,11 @@ class Index extends Controller
 
         return $this->fetch();
     }
+
+    /**
+     * @return mixed
+     * 登录
+     */
     public function login()
     {
         if (Request::instance()->isPost()) {
@@ -58,10 +70,9 @@ class Index extends Controller
         }
     }
 
-    /*
+    /**
      * 用户注册
      */
-
     public function register()
     {
         if (Request::instance()->isPost()) {
@@ -76,7 +87,7 @@ class Index extends Controller
         }
     }
 
-    /*
+    /**
      * 退出
      */
     public function logout()
@@ -84,6 +95,64 @@ class Index extends Controller
         Session::clear('id');
         Session::clear('nickname');
         return $this->redirect('/index/index/login');
+    }
+
+    /**
+     * @return mixed
+     * 向我们推荐
+     */
+    public function recToUs()
+    {
+        if (Request::instance()->isPost()) {
+            $data = $this->_recToUs();
+            if ($this->recToUs->tableAdd($data)) {
+                $this->success('提交成功，我们将尽快处理，请关注你的提交记录', '/index/index/recToUs', '', 2);
+            } else {
+                $this->error('似乎出了点问题，请重新填写提交', '/index/index/recToUs', '', 2);
+            }
+        } else {
+            $field = ['id', 'cname as name'];
+            $allCourse = $this->course->tableSelect(true, $field);
+
+            $this->assign('cName', $allCourse);
+            return $this->fetch();
+        }
+    }
+
+    /**
+     * @return mixed
+     * 过滤
+     */
+    private function _recToUs()
+    {
+        $response = Request::instance()->post();
+        $data['referrer_id'] = Session::get('id');
+        $data['course_id'] = trim($response['courseId']);
+        $data['name'] = trim($response['name']);
+        $data['email'] = trim($response['referrerEmail']);
+        $data['gender'] = $response['referrerGender'] == 0 ? '男' : '女';
+        $data['company'] = $response['referrerCompany'];
+        $data['phone'] = $response['referrerPhone'];
+        $data['qq'] = $response['referrerQq'];
+        $data['wechat'] = $response['referrerWechat'];
+
+        return $data;
+    }
+
+    /**
+     * @return mixed
+     * 查看所有课程
+     */
+    public function allCourse()
+    {
+        $page = $this->course->pageSelect();
+
+//        var_dump($page);exit;
+
+        $this->assign('courseInfo', $page['list']);
+        $this->assign('coursePage', $page['page']);
+
+        return $this->fetch();
     }
 
     /**
@@ -106,9 +175,26 @@ class Index extends Controller
         return $data;
     }
 
+    /**
+     * 积分提现请求
+     */
     public function toCash()
     {
         echo '提现';
+    }
+
+    /**
+     * @return mixed
+     * 查看推荐状态
+     */
+    public function recStatus()
+    {
+        $where['id'] = Session::get('id');
+        $recStatus = $this->recToUs->recPageSelect($where);
+
+        $this->assign('recStatus', $recStatus['list']);
+        $this->assign('recStatusPage', $recStatus['page']);
+        return $this->fetch();
     }
 }
 

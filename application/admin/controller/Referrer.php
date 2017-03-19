@@ -8,6 +8,7 @@
 
 namespace app\admin\controller;
 
+use app\admin\model\Rectous;
 use app\admin\model\Referrer as ReferrerModel;
 use think\Controller;
 use think\Request;
@@ -15,11 +16,13 @@ use think\Request;
 class Referrer extends Controller
 {
     protected $referrerModel;
+    protected $recToUsModel;
 
-    public function __construct(Request $request, ReferrerModel $referrer)
+    public function __construct(Request $request, ReferrerModel $referrer, Rectous $rectous)
     {
         parent::__construct($request);
         $this->referrerModel = $referrer;
+        $this->recToUsModel = $rectous;
     }
 
     public function _initialize()
@@ -61,6 +64,21 @@ class Referrer extends Controller
     }
 
     /**
+     * @return mixed
+     * 向我们推荐
+     */
+    public function recToUs()
+    {
+        $this->assign('recToUs', 'active');
+        $recStatus = $this->recToUsModel->recPageSelect();
+
+        $this->assign('recStatus', $recStatus['list']);
+        $this->assign('recStatusPage', $recStatus['page']);
+
+        return $this->fetch();
+    }
+
+    /**
      * 处理提交数据
      */
     private function _param()
@@ -78,5 +96,22 @@ class Referrer extends Controller
         $data['password'] = empty($response['referrerPassword']) ? md5('123456') : md5($response['referrerPassword']);
 
         return $data;
+    }
+
+    public function handleRec()
+    {
+        if (Request::instance()->isPost()) {
+            $post = Request::instance()->post();
+            $where['id'] = intval($post['recId']);
+            $data['status'] = intval($post['recStatus']);
+            $data['credit'] = intval($post['credit']);
+            if($this->recToUsModel->handleRec($where, $data)) {
+                $this->success('处理成功', '/admin/referrer/recToUs', '', 2);
+            } else {
+                $this->success('处理失败', '/admin/referrer/recToUs', '', 1);
+            }
+        } else {
+
+        }
     }
 }
