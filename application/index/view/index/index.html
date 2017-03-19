@@ -120,19 +120,19 @@
                                 <div>
                                     {switch	name="c.tocash"}
                                     {case value="0"}
-                                    <a href="/index/index/toCash" class="btn btn-block btn-sm btn-purple">
+                                    <a href="/index/index/toCash?id={$c.id}&status=1" class="btn btn-block btn-sm btn-purple">
                                         <i class="ace-icon fa fa-credit-card bigger-110"></i>
                                         <span>提现</span>
                                     </a>
                                     {/case}
                                     {case value="1"}
-                                    <a href="/index/index/toCash" class="btn btn-block btn-sm btn-pink">
+                                    <a href="#" class="btn btn-block btn-sm btn-pink">
                                         <i class="ace-icon fa fa-credit-card bigger-110"></i>
                                         <span>提现中</span>
                                     </a>
                                     {/case}
                                     {case value="2"}
-                                    <a href="/index/index/toCash" class="btn btn-block btn-sm btn-success">
+                                    <a href="#" class="btn btn-block btn-sm btn-success">
                                         <i class="ace-icon fa fa-credit-card bigger-110"></i>
                                         <span>已经提现</span>
                                     </a>

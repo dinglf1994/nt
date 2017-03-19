@@ -4,6 +4,7 @@ namespace app\index\controller;
 use app\index\model\Course;
 use app\index\model\Rectous;
 use app\index\model\Referrer;
+use app\index\model\Referrertocredit;
 use think\Controller;
 use think\Request;
 use think\Session;
@@ -13,6 +14,7 @@ class Index extends Controller
     protected $referrerModel;
     protected $course;
     protected $recToUs;
+    protected $recToCre;
     private $loginCheck = ['login', 'register'];
     public function _initialize()
     {
@@ -22,12 +24,13 @@ class Index extends Controller
             isLogin();
         }
     }
-    public function __construct(Request $request, Referrer $referrer, Course $course, Rectous $rectous)
+    public function __construct(Request $request, Referrer $referrer, Course $course, Rectous $rectous, Referrertocredit $referrertocredit)
     {
         parent::__construct($request);
         $this->referrerModel = $referrer;
         $this->course = $course;
         $this->recToUs = $rectous;
+        $this->recToCre = $referrertocredit;
     }
 
     /**
@@ -180,7 +183,15 @@ class Index extends Controller
      */
     public function toCash()
     {
-        echo '提现';
+        $info = Request::instance()->get();
+        $where['id'] = $info['id'];
+        $data['tocash'] = $info['status'];
+
+        if ($this->recToCre->recToCredit($where, $data)) {
+            $this->success('已经发起提现，请关注提现状态', '/', 2);
+        } else {
+            $this->success('发起提现失败，请重试', '/', 2);
+        }
     }
 
     /**
